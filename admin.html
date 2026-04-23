@@ -1,0 +1,1407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Halal Food Foundation · Admin (Mobile)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0a5c36;
+            --primary-dark: #064523;
+            --primary-light: #1e7a4d;
+            --secondary-color: #d4af37;
+            --secondary-light: #e6c45e;
+            --accent-color: #f39c12;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f1c40f;
+            --info-color: #3498db;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --gray-color: #95a5a6;
+            --text-color: #34495e;
+            --border-color: #e0e0e0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --transition: all 0.25s ease;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #f0f4f8 0%, #d9e2ec 100%);
+            color: var(--text-color);
+            line-height: 1.5;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .login-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, var(--primary-color), #0b6e41);
+            padding: 12px;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 28px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            padding: 32px 24px;
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .login-header img {
+            height: 85px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .login-header h2 {
+            color: var(--primary-color);
+            font-size: 1.9rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .login-header p {
+            color: #5e7a8c;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            color: var(--dark-color);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-control,
+        .filter-select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e8edf2;
+            border-radius: 18px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            background: white;
+            transition: var(--transition);
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .filter-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10,92,54,0.15);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, var(--primary-color), #166b3b);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            letter-spacing: 0.3px;
+            font-size: 1rem;
+            width: 100%;
+            box-shadow: 0 6px 12px rgba(10,92,54,0.3);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:hover {
+            transform: scale(1.02);
+            background: #1e7a4d;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: #b0c4d9;
+            color: #1e3b4f;
+            box-shadow: none;
+        }
+        .btn-danger {
+            background: #e74c3c;
+            box-shadow: 0 4px 12px #e74c3c70;
+        }
+
+        .alert {
+            padding: 14px 18px;
+            border-radius: 40px;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .admin-container {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .admin-nav {
+            background: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            padding: 8px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 16px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px 10px;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .nav-logo img {
+            height: 80px;
+            width: 80px;
+            object-fit: cover;
+        }
+        .nav-logo span {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            white-space: nowrap;
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .user-info {
+            text-align: right;
+            line-height: 1.3;
+        }
+        .user-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.95rem;
+        }
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--gray-color);
+        }
+
+        .logout-btn {
+            padding: 10px 16px;
+            background: transparent;
+            border: 2px solid var(--danger-color);
+            color: var(--danger-color);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.9rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+        }
+        .logout-btn:active {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .admin-main {
+            padding: 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .page-header {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 32px;
+            box-shadow: var(--shadow);
+        }
+        .page-header h1 {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .page-header h1 i {
+            background: var(--primary-color);
+            padding: 12px;
+            border-radius: 18px;
+            color: white;
+            font-size: 1.4rem;
+        }
+        .add-news-btn {
+            width: 100%;
+            justify-content: center;
+            padding: 14px;
+            border-radius: 40px;
+            background: linear-gradient(145deg, #27ae60, #1e8449);
+            box-shadow: 0 8px 20px #22995470;
+            font-size: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 28px;
+            padding: 22px 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+        .stat-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 20px;
+            background: var(--primary-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.8rem;
+        }
+        .stat-content h3 {
+            font-size: 0.95rem;
+            color: #6b7f8f;
+        }
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .filter-bar {
+            background: white;
+            padding: 20px;
+            border-radius: 32px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: var(--shadow);
+        }
+        .search-box {
+            width: 100%;
+            position: relative;
+        }
+        .search-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0b8c9;
+            font-size: 1rem;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 48px;
+            border-radius: 40px;
+            border: 2px solid #e4ecf3;
+            font-size: 1rem;
+        }
+
+        .filter-select {
+            border-radius: 40px;
+            background: white url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2334495e" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 20px center;
+            background-size: 16px;
+            padding: 15px 24px;
+            -webkit-appearance: none;
+        }
+
+        .news-table-container {
+            background: transparent;
+            padding: 0;
+            box-shadow: none;
+            overflow-x: hidden;
+        }
+
+        .news-table {
+            display: none;
+        }
+
+        .news-card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .news-card {
+            background: white;
+            border-radius: 30px;
+            padding: 18px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.03);
+            border: 1px solid #f0f3f7;
+            transition: 0.15s;
+        }
+
+        .news-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .news-card-title {
+            font-weight: 700;
+            font-size: 1.25rem;
+            color: var(--dark-color);
+            line-height: 1.3;
+            flex: 1;
+            padding-right: 8px;
+        }
+
+        .news-card-date {
+            font-size: 0.8rem;
+            background: #eaf3eb;
+            padding: 6px 14px;
+            border-radius: 40px;
+            color: var(--primary-dark);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .news-card-preview {
+            color: #5f7d95;
+            font-size: 0.95rem;
+            margin: 12px 0 18px;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .news-card-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .card-action-btn {
+            flex: 1;
+            min-width: 90px;
+            background: #f2f6fa;
+            border: none;
+            border-radius: 30px;
+            padding: 12px 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c3e50;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: 0.15s;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .card-action-btn i { font-size: 1rem; }
+        .card-action-btn:active { background: #d0e0ee; }
+        .view-btn-card i { color: var(--info-color); }
+        .edit-btn-card i { color: #e67e22; }
+        .delete-btn-card i { color: var(--danger-color); }
+
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin: 28px 0 12px;
+        }
+
+        .page-btn {
+            width: 46px;
+            height: 46px;
+            border-radius: 46px;
+            border: 2px solid #e0e8f0;
+            background: white;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .page-btn.active {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        .page-btn:active {
+            background: #e6edf5;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.6);
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 2000;
+            padding: 0;
+            backdrop-filter: blur(4px);
+        }
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.2s;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 36px 36px 0 0;
+            width: 100%;
+            max-height: 92vh;
+            overflow-y: auto;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
+            padding: 20px 20px 30px;
+            animation: slideUpModal 0.25s ease;
+        }
+
+        @keyframes slideUpModal {
+            0% { transform: translateY(30px); opacity: 0.6; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0 16px;
+            border-bottom: 2px solid #f0f5fa;
+            margin-bottom: 16px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 2.4rem;
+            line-height: 1;
+            cursor: pointer;
+            color: #96aec2;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+        .modal-close:active { background: #f1f5f9; }
+
+        .modal-footer {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 28px;
+        }
+        .modal-footer .btn {
+            width: 100%;
+            margin: 0;
+        }
+
+        .view-modal .modal-content { border-radius: 36px 36px 0 0; }
+        .view-news-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            line-height: 1.3;
+        }
+        .view-news-date {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #557a8a;
+            background: #f2f8ff;
+            padding: 12px 18px;
+            border-radius: 40px;
+            margin: 16px 0;
+        }
+        .view-news-description {
+            background: #f7faff;
+            padding: 22px;
+            border-radius: 28px;
+            font-size: 1rem;
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 48px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6a8fa0;
+        }
+
+        @media (min-width: 680px) {
+            .stats-grid { grid-template-columns: repeat(2,1fr); }
+            .page-header { flex-direction: row; align-items: center; justify-content: space-between; }
+            .add-news-btn { width: auto; }
+            .modal-content { max-width: 600px; border-radius: 36px; margin: 20px; }
+            .modal { align-items: center; }
+            .modal-footer { flex-direction: row; }
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: white;
+            padding: 8px;
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 30px;
+            font-weight: 600;
+            color: var(--gray-color);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 10px rgba(10, 92, 54, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #e8edf2;
+            border-radius: 18px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            background: white;
+            transition: var(--transition);
+            resize: vertical;
+        }
+
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(10,92,54,0.15);
+        }
+
+        .news-table, #newsTable { display: none; }
+    </style>
+</head>
+<body>
+    <div class="login-container" id="loginPage">
+        <div class="login-card">
+            <div class="login-header">
+                <img src="./image/halal logo.png" alt="HFF Logo">
+                <h2>Admin Login</h2>
+                <p>Enter credentials</p>
+            </div>
+            <div id="loginAlert" class="alert alert-danger" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i> <span id="loginErrorMessage"></span>
+            </div>
+            <form id="loginForm">
+                <div class="form-group"><label><i class="fas fa-envelope"></i> Email</label><input type="email" id="email" placeholder="admin@halal.com" required></div>
+                <div class="form-group"><label><i class="fas fa-lock"></i> Password</label><input type="password" id="password" placeholder="••••••••" required></div>
+                <button type="submit" class="btn" id="loginBtn"><span class="btn-text">Login</span><i class="fas fa-spinner fa-spin" style="display: none;"></i></button>
+            </form>
+            <div style="margin-top: 20px; text-align: center;"><a href="/" style="color:var(--primary-color);"><i class="fas fa-arrow-left"></i> back</a></div>
+        </div>
+    </div>
+
+    <div class="admin-container" id="adminPanel">
+        <nav class="admin-nav">
+            <div class="nav-content">
+                <div class="nav-logo"><a href="./index.html"><img src="./image/halal logo.png" alt="HFF Logo"></a><span>Halal Food Admin</span></div>
+                <div class="nav-user">
+                    <div class="user-info"><div class="user-name" id="adminName">Admin</div><div class="user-role">manager</div></div>
+                    <button class="logout-btn" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span class="hide-xs">Exit</span></button>
+                </div>
+            </div>
+        </nav>
+
+        <main class="admin-main">
+            <div class="admin-tabs">
+                <button class="tab-btn active" data-tab="news-section"><i class="fas fa-newspaper"></i> News</button>
+                <button class="tab-btn" data-tab="trustees-section"><i class="fas fa-users"></i> Trustees</button>
+                <button class="tab-btn" data-tab="hero-section"><i class="fas fa-images"></i> Hero Slider</button>
+                <button class="tab-btn" data-tab="events-section"><i class="fas fa-calendar-star"></i> Events</button>
+            </div>
+
+            <!-- News Section -->
+            <div id="news-section" class="tab-content active">
+                <div class="page-header">
+                    <h1><i class="fas fa-newspaper"></i> News</h1>
+                    <button class="btn add-news-btn" id="addNewsBtn"><i class="fas fa-plus-circle"></i> New article</button>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-newspaper"></i></div><div class="stat-content"><h3>Total</h3><div class="stat-number" id="totalNews">0</div></div></div>
+                    <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-alt"></i></div><div class="stat-content"><h3>This month</h3><div class="stat-number" id="monthNews">0</div></div></div>
+                </div>
+
+                <div class="filter-bar">
+                    <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search news..."></div>
+                    <select class="filter-select" id="sortFilter"><option value="newest">📅 Newest</option><option value="oldest">📅 Oldest</option><option value="title">📝 Title</option></select>
+                </div>
+
+                <div id="loadingIndicator" class="loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i><p>Loading articles…</p></div>
+                <div id="emptyState" class="empty-state" style="display: none;"><i class="fas fa-newspaper"></i><h3>No news</h3><p>Create your first article</p></div>
+
+                <div id="newsCardList" class="news-card-list"></div>
+                <div class="pagination" id="pagination"></div>
+            </div>
+
+            <!-- Trustees Section -->
+            <div id="trustees-section" class="tab-content">
+                <div class="page-header">
+                    <h1><i class="fas fa-users"></i> Board of Trustees</h1>
+                    <button class="btn add-news-btn" id="addTrusteeBtn" style="background: linear-gradient(145deg, #3498db, #2980b9); box-shadow: 0 8px 20px rgba(52, 152, 219, 0.4);"><i class="fas fa-user-plus"></i> Add Trustee</button>
+                </div>
+                <div class="stats-grid"><div class="stat-card"><div class="stat-icon" style="background: #3498db;"><i class="fas fa-users"></i></div><div class="stat-content"><h3>Total Trustees</h3><div class="stat-number" id="totalTrustees">0</div></div></div></div>
+                <div id="trusteesLoadingIndicator" class="loading" style="display: none;"><i class="fas fa-spinner fa-spin"></i><p>Loading trustees…</p></div>
+                <div id="trusteesEmptyState" class="empty-state" style="display: none;"><i class="fas fa-users"></i><h3>No trustees</h3><p>Add your first trustee</p></div>
+                <div id="trusteeCardList" class="news-card-list"></div>
+            </div>
+
+            <!-- Hero Slider Section -->
+            <div id="hero-section" class="tab-content">
+                <div class="page-header">
+                    <h1><i class="fas fa-images"></i> Hero Slider</h1>
+                    <button class="btn add-news-btn" id="addHeroBtn"><i class="fas fa-plus-circle"></i> Add Slide</button>
+                </div>
+                <div id="heroCardList" class="news-card-list"></div>
+            </div>
+
+            <!-- Events Section -->
+            <div id="events-section" class="tab-content">
+                <div class="page-header">
+                    <h1><i class="fas fa-calendar-day"></i> Event Images</h1>
+                    <button class="btn add-news-btn" id="addEventBtn"><i class="fas fa-plus-circle"></i> Add Event</button>
+                </div>
+                <div id="eventCardList" class="news-card-list"></div>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal" id="newsModal"><div class="modal-content"><div class="modal-header"><h2 id="modalTitle"><i class="fas fa-plus-circle"></i><span>Article</span></h2><button class="modal-close" id="modalClose">&times;</button></div>
+    <form id="newsForm"><div class="modal-body"><div id="modalAlert" class="alert alert-danger" style="display: none;"></div><input type="hidden" id="newsId">
+    <div class="form-group"><label>Title *</label><input type="text" id="newsTitle" class="form-control" required></div>
+    <div class="form-group"><label>Content *</label><textarea id="newsDescription" class="form-textarea" rows="5" required></textarea></div>
+    <div class="form-group"><label>Date *</label><input type="datetime-local" id="newsDate" class="form-control" required></div>
+    <div class="form-group"><label>Image (Optional)</label><input type="file" id="newsImage" class="form-control" accept="./image/*"></div>
+    </div><div class="modal-footer"><button type="button" class="btn btn-secondary" id="cancelBtn"><i class="fas fa-times"></i> Cancel</button><button type="submit" class="btn" id="saveBtn"><span class="btn-text">Save</span><i class="fas fa-spinner fa-spin" style="display:none;"></i></button></div></form></div></div>
+
+    <div class="modal" id="deleteModal"><div class="modal-content"><div class="modal-header"><h2><i class="fas fa-exclamation-triangle" style="color:#e74c3c;"></i> Confirm</h2><button class="modal-close" id="deleteModalClose">&times;</button></div><div class="modal-body"><p style="font-size:1.2rem;">Delete permanently?</p><p style="color:var(--danger-color);"> irreversible</p></div><div class="modal-footer"><button class="btn btn-secondary" id="cancelDeleteBtn">Cancel</button><button class="btn btn-danger" id="confirmDeleteBtn"><span class="btn-text">Delete</span><i class="fas fa-spinner fa-spin" style="display:none;"></i></button></div></div></div>
+
+    <div class="modal view-modal" id="viewNewsModal"><div class="modal-content"><div class="modal-header"><h2><i class="fas fa-newspaper"></i> Preview</h2><button class="modal-close" id="viewModalClose">&times;</button></div><div class="modal-body"><div class="view-news-title" id="viewNewsTitle"></div><div class="view-news-date"><i class="fas fa-calendar-alt"></i><span id="viewNewsDateText"></span></div><div class="view-news-description" id="viewNewsDescription"></div></div><div class="modal-footer"><button class="btn btn-secondary" id="closeViewBtn">Close</button></div></div></div>
+
+    <!-- Trustee Modal -->
+    <div class="modal" id="trusteeModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="trusteeModalTitle"><i class="fas fa-user-plus"></i><span>Trustee</span></h2><button class="modal-close" id="trusteeModalClose">&times;</button></div>
+            <form id="trusteeForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div id="trusteeModalAlert" class="alert alert-danger" style="display: none;"></div>
+                    <input type="hidden" id="trusteeId">
+                    <div class="form-group"><label>Full Name *</label><input type="text" id="trusteeName" class="form-control" required></div>
+                    <div class="form-group"><label>Position</label><input type="text" id="trusteePosition" class="form-control" placeholder="e.g. Chairman, Member"></div>
+                    <div class="form-group"><label>Biography *</label><textarea id="trusteeBio" class="form-textarea" rows="5" required></textarea></div>
+                    <div class="form-group"><label>Order (Sorting)</label><input type="number" id="trusteeOrder" class="form-control" value="0"></div>
+                    <div class="form-group">
+                        <label>Profile Image *</label>
+                        <input type="file" id="trusteeImage" class="form-control" accept="./image/*">
+                        <div id="imagePreviewContainer" style="margin-top: 10px; display: none;">
+                            <p style="font-size: 0.8rem; color: var(--gray-color);">Current image:</p>
+                            <img id="trusteeImagePreview" src="" alt="Preview" style="width: 100px; height: 100px; object-fit: cover; border-radius: 10px; border: 2px solid #eee;">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelTrusteeBtn"><i class="fas fa-times"></i> Cancel</button>
+                    <button type="submit" class="btn" id="saveTrusteeBtn"><span class="btn-text">Save Trustee</span><i class="fas fa-spinner fa-spin" style="display:none;"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Modal -->
+    <div class="modal" id="heroModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2 id="heroModalTitle"><i class="fas fa-plus-circle"></i><span>Slide</span></h2><button class="modal-close" id="heroModalClose">&times;</button></div>
+            <form id="heroForm">
+                <div class="modal-body">
+                    <input type="hidden" id="heroId">
+                    <div class="form-group"><label>Title *</label><input type="text" id="heroTitle" class="form-control" required></div>
+                    <div class="form-group"><label>Subtitle</label><textarea id="heroSubtitle" class="form-textarea" rows="3"></textarea></div>
+                    <div class="form-group"><label>Order</label><input type="number" id="heroOrder" class="form-control" value="0"></div>
+                    <div class="form-group"><label>Image *</label><input type="file" id="heroImage" class="form-control" accept="./image/*"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelHeroBtn"><i class="fas fa-times"></i> Cancel</button>
+                    <button type="submit" class="btn" id="saveHeroBtn"><span class="btn-text">Save Slide</span><i class="fas fa-spinner fa-spin" style="display:none;"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Event Modal -->
+    <div class="modal" id="eventModal">
+        <div class="modal-content">
+            <div class="modal-header"><h2><i class="fas fa-calendar-plus"></i><span>Add Event Image</span></h2><button class="modal-close" id="eventModalClose">&times;</button></div>
+            <form id="eventForm">
+                <div class="modal-body">
+                    <div class="form-group"><label>Event Title</label><input type="text" id="eventTitle" class="form-control" placeholder="e.g. Webinar 2024"></div>
+                    <div class="form-group"><label>Event Image *</label><input type="file" id="eventImage" class="form-control" accept="./image/*" required></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelEventBtn"><i class="fas fa-times"></i> Cancel</button>
+                    <button type="submit" class="btn" id="saveEventBtn"><span class="btn-text">Upload Image</span><i class="fas fa-spinner fa-spin" style="display:none;"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const API_BASE_URL = 'http://localhost:5000/api';
+            let authToken = localStorage.getItem('adminToken');
+            let currentUser = JSON.parse(localStorage.getItem('adminUser') || '{}');
+            let newsData = [];
+            let trusteeData = [];
+            let currentPage = 1, itemsPerPage = 5;
+            let currentFilters = { search: '', sort: 'newest' };
+            let deleteTargetId = null;
+            let deleteType = 'news'; // 'news', 'trustee', 'hero', 'event'
+            let heroData = [], eventData = [];
+
+            const loginPage = document.getElementById('loginPage');
+            const adminPanel = document.getElementById('adminPanel');
+            const loginForm = document.getElementById('loginForm');
+            const loginBtn = document.getElementById('loginBtn');
+            const loginAlert = document.getElementById('loginAlert');
+            const loginErrorMessage = document.getElementById('loginErrorMessage');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const adminName = document.getElementById('adminName');
+            const addNewsBtn = document.getElementById('addNewsBtn');
+            const newsModal = document.getElementById('newsModal');
+            const modalClose = document.getElementById('modalClose');
+            const cancelBtn = document.getElementById('cancelBtn');
+            const newsForm = document.getElementById('newsForm');
+            const modalTitle = document.getElementById('modalTitle');
+            const newsId = document.getElementById('newsId');
+            const newsTitle = document.getElementById('newsTitle');
+            const newsDescription = document.getElementById('newsDescription');
+            const newsDate = document.getElementById('newsDate');
+            const modalAlert = document.getElementById('modalAlert');
+            const saveBtn = document.getElementById('saveBtn');
+            const deleteModal = document.getElementById('deleteModal');
+            const deleteModalClose = document.getElementById('deleteModalClose');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            const searchInput = document.getElementById('searchInput');
+            const sortFilter = document.getElementById('sortFilter');
+            const viewNewsModal = document.getElementById('viewNewsModal');
+            const viewModalClose = document.getElementById('viewModalClose');
+            const closeViewBtn = document.getElementById('closeViewBtn');
+            const viewNewsTitle = document.getElementById('viewNewsTitle');
+            const viewNewsDateText = document.getElementById('viewNewsDateText');
+            const viewNewsDescription = document.getElementById('viewNewsDescription');
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const emptyState = document.getElementById('emptyState');
+            const paginationDiv = document.getElementById('pagination');
+            const totalNewsSpan = document.getElementById('totalNews');
+            const monthNewsSpan = document.getElementById('monthNews');
+            const newsCardList = document.getElementById('newsCardList');
+
+            // Trustees Elements
+            const addTrusteeBtn = document.getElementById('addTrusteeBtn');
+            const trusteeModal = document.getElementById('trusteeModal');
+            const trusteeModalClose = document.getElementById('trusteeModalClose');
+            const cancelTrusteeBtn = document.getElementById('cancelTrusteeBtn');
+            const trusteeForm = document.getElementById('trusteeForm');
+            const trusteeModalTitle = document.getElementById('trusteeModalTitle');
+            const trusteeId = document.getElementById('trusteeId');
+            const trusteeName = document.getElementById('trusteeName');
+            const trusteePosition = document.getElementById('trusteePosition');
+            const trusteeBio = document.getElementById('trusteeBio');
+            const trusteeOrder = document.getElementById('trusteeOrder');
+            const trusteeImage = document.getElementById('trusteeImage');
+            const trusteeImagePreview = document.getElementById('trusteeImagePreview');
+            const imagePreviewContainer = document.getElementById('imagePreviewContainer');
+            const trusteeModalAlert = document.getElementById('trusteeModalAlert');
+            const saveTrusteeBtn = document.getElementById('saveTrusteeBtn');
+            const trusteeCardList = document.getElementById('trusteeCardList');
+            const totalTrusteesSpan = document.getElementById('totalTrustees');
+            const trusteesLoadingIndicator = document.getElementById('trusteesLoadingIndicator');
+            const trusteesEmptyState = document.getElementById('trusteesEmptyState');
+
+            // Hero Elements
+            const addHeroBtn = document.getElementById('addHeroBtn');
+            const heroModal = document.getElementById('heroModal');
+            const heroModalClose = document.getElementById('heroModalClose');
+            const cancelHeroBtn = document.getElementById('cancelHeroBtn');
+            const heroForm = document.getElementById('heroForm');
+            const heroModalTitle = document.getElementById('heroModalTitle');
+            const heroId = document.getElementById('heroId');
+            const heroTitle = document.getElementById('heroTitle');
+            const heroSubtitle = document.getElementById('heroSubtitle');
+            const heroOrder = document.getElementById('heroOrder');
+            const heroImage = document.getElementById('heroImage');
+            const heroCardList = document.getElementById('heroCardList');
+            const saveHeroBtn = document.getElementById('saveHeroBtn');
+
+            // Event Elements
+            const addEventBtn = document.getElementById('addEventBtn');
+            const eventModal = document.getElementById('eventModal');
+            const eventModalClose = document.getElementById('eventModalClose');
+            const cancelEventBtn = document.getElementById('cancelEventBtn');
+            const eventForm = document.getElementById('eventForm');
+            const eventTitle = document.getElementById('eventTitle');
+            const eventImage = document.getElementById('eventImage');
+            const eventCardList = document.getElementById('eventCardList');
+            const saveEventBtn = document.getElementById('saveEventBtn');
+
+            // Tab logic
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tabId = btn.getAttribute('data-tab');
+                    tabButtons.forEach(b => b.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.getElementById(tabId).classList.add('active');
+                    if (tabId === 'trustees-section') fetchTrustees();
+                    else if (tabId === 'hero-section') fetchHeroes();
+                    else if (tabId === 'events-section') fetchEvents();
+                    else fetchNews();
+                });
+            });
+
+            if (authToken) { showAdminPanel(); fetchNews(); }
+
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const email = document.getElementById('email').value, password = document.getElementById('password').value;
+                loginBtn.disabled = true; loginBtn.querySelector('.btn-text').style.display='none'; loginBtn.querySelector('.fa-spinner').style.display='inline-block';
+                try {
+                    const resp = await fetch(`${API_BASE_URL}/auth/login`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({email,password}) });
+                    const data = await resp.json();
+                    if (resp.ok) {
+                        authToken = data.accessToken || data.token; currentUser = data.user || {};
+                        localStorage.setItem('adminToken', authToken); localStorage.setItem('adminUser', JSON.stringify(data.user));
+                        showAdminPanel(); fetchNews(); loginForm.reset(); loginAlert.style.display='none';
+                    } else { showLoginError(data.message || 'Invalid'); }
+                } catch (error) { 
+                    console.error('Login error:', error);
+                    showLoginError('Network error or server down'); 
+                }
+                finally { loginBtn.disabled=false; loginBtn.querySelector('.btn-text').style.display='inline'; loginBtn.querySelector('.fa-spinner').style.display='none'; }
+            });
+
+            function showLoginError(m) { loginErrorMessage.textContent=m; loginAlert.style.display='flex'; setTimeout(()=>loginAlert.style.display='none',4000); }
+            function showAdminPanel() { loginPage.style.display='none'; adminPanel.style.display='block'; if (currentUser.name) adminName.textContent=currentUser.name; }
+
+            logoutBtn.addEventListener('click', ()=>{ localStorage.removeItem('adminToken'); localStorage.removeItem('adminUser'); authToken=null; loginPage.style.display='flex'; adminPanel.style.display='none'; });
+
+            async function fetchNews() {
+                showLoading(true);
+                try {
+                    const resp = await fetch(`${API_BASE_URL}/news`, { headers: { Authorization: `Bearer ${authToken}` } });
+                    if (!resp.ok) { if(resp.status===401) logoutBtn.click(); throw new Error(); }
+                    const data = await resp.json(); newsData = Array.isArray(data) ? data : (data.data || data.news || []);
+                    updateStats(); applyFiltersAndRender();
+                } catch { showError('Could not load.'); } finally { showLoading(false); }
+            }
+
+            function updateStats() {
+                totalNewsSpan.textContent = newsData.length;
+                const now = new Date(), monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+                const mCount = newsData.filter(n => new Date(n.createdAt||n.date||0) >= monthStart).length;
+                monthNewsSpan.textContent = mCount;
+            }
+
+            function applyFiltersAndRender() {
+                let filtered = [...newsData];
+                if (currentFilters.search) { const s = currentFilters.search.toLowerCase(); filtered = filtered.filter(n => (n.title||'').toLowerCase().includes(s) || (n.description||'').toLowerCase().includes(s)); }
+                filtered.sort((a,b)=>{ const da=new Date(a.createdAt||a.date||0), db=new Date(b.createdAt||b.date||0); if(currentFilters.sort==='newest') return db-da; if(currentFilters.sort==='oldest') return da-db; return (a.title||'').localeCompare(b.title||''); });
+                renderCards(filtered); renderPagination(filtered.length);
+            }
+
+            function escapeHtml(text) {
+                const div = document.createElement('div');
+                div.textContent = text;
+                return div.innerHTML;
+            }
+
+            function renderCards(items) {
+                const start = (currentPage-1)*itemsPerPage, end = start+itemsPerPage, pageItems = items.slice(start, end);
+                if (items.length===0) { newsCardList.style.display='none'; emptyState.style.display='block'; return; }
+                newsCardList.style.display='flex'; emptyState.style.display='none';
+                newsCardList.innerHTML = pageItems.map(n => {
+                    const date = new Date(n.createdAt||n.date||Date.now()).toLocaleDateString('en-US',{ month:'short', day:'numeric', year:'numeric' });
+                    const preview = (n.description||'').substring(0,110)+((n.description||'').length>110?'…':'');
+                    return `<div class="news-card">
+                        <div class="news-card-header"><span class="news-card-title">${escapeHtml(n.title||'')}</span><span class="news-card-date">${date}</span></div>
+                        <div class="news-card-preview">${escapeHtml(preview)}</div>
+                        <div class="news-card-actions">
+                            <button class="card-action-btn view-btn-card" onclick="viewNews('${n._id}')"><i class="fas fa-eye"></i> View</button>
+                            <button class="card-action-btn edit-btn-card" onclick="editNews('${n._id}')"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="card-action-btn delete-btn-card" onclick="openDeleteModal('${n._id}')"><i class="fas fa-trash"></i> Del</button>
+                        </div>
+                    </div>`;
+                }).join('');
+            }
+
+            window.viewNews = async (id) => { try { const r = await fetch(`${API_BASE_URL}/news/${id}`,{headers:{Authorization:`Bearer ${authToken}`}}); if(r.ok) openViewModal(await r.json()); } catch(e){} };
+            window.editNews = async (id) => { try { const r = await fetch(`${API_BASE_URL}/news/${id}`,{headers:{Authorization:`Bearer ${authToken}`}}); if(r.ok) openNewsModal(await r.json()); } catch(e){} };
+            window.openDeleteModal = (id, type = 'news') => { 
+                deleteTargetId = id; 
+                deleteType = type;
+                deleteModal.classList.add('active'); 
+            };
+
+            // Trustees Logic
+            async function fetchTrustees() {
+                showTrusteesLoading(true);
+                try {
+                    const resp = await fetch(`${API_BASE_URL}/trustee`, { headers: { Authorization: `Bearer ${authToken}` } });
+                    if (!resp.ok) throw new Error();
+                    const data = await resp.json();
+                    trusteeData = Array.isArray(data) ? data : (data.trustees || []);
+                    totalTrusteesSpan.textContent = trusteeData.length;
+                    renderTrusteeCards();
+                } catch { showTrusteesError('Could not load trustees.'); } finally { showTrusteesLoading(false); }
+            }
+
+            function renderTrusteeCards() {
+                if (trusteeData.length === 0) {
+                    trusteeCardList.style.display = 'none';
+                    trusteesEmptyState.style.display = 'block';
+                    return;
+                }
+                trusteeCardList.style.display = 'flex';
+                trusteesEmptyState.style.display = 'none';
+                trusteeCardList.innerHTML = trusteeData.map(t => `
+                    <div class="news-card">
+                        <div class="news-card-header" style="align-items: center; gap: 15px;">
+                            <img src="${t.image}" alt="${t.name}" style="width: 50px; height: 50px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary-color);">
+                            <div style="flex: 1;">
+                                <div class="news-card-title">${escapeHtml(t.name)}</div>
+                                <div style="font-size: 0.8rem; color: var(--gray-color);">${escapeHtml(t.position || 'Trustee')}</div>
+                            </div>
+                            <span class="news-card-date">Order: ${t.order || 0}</span>
+                        </div>
+                        <div class="news-card-preview">${escapeHtml(t.bio.substring(0, 100))}${t.bio.length > 100 ? '...' : ''}</div>
+                        <div class="news-card-actions">
+                            <button class="card-action-btn edit-btn-card" onclick="editTrustee('${t._id}')"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="card-action-btn delete-btn-card" onclick="openDeleteModal('${t._id}', 'trustee')"><i class="fas fa-trash"></i> Del</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            window.editTrustee = async (id) => {
+                try {
+                    const r = await fetch(`${API_BASE_URL}/trustee/${id}`, { headers: { Authorization: `Bearer ${authToken}` } });
+                    if (r.ok) {
+                        const data = await r.json();
+                        openTrusteeModal(data);
+                    }
+                } catch (e) { }
+            };
+
+            function openTrusteeModal(t) {
+                trusteeModalTitle.innerHTML = t ? '<i class="fas fa-edit"></i><span>Edit Trustee</span>' : '<i class="fas fa-user-plus"></i><span>Add Trustee</span>';
+                trusteeId.value = t?._id || '';
+                trusteeName.value = t?.name || '';
+                trusteePosition.value = t?.position || '';
+                trusteeBio.value = t?.bio || '';
+                trusteeOrder.value = t?.order || 0;
+                trusteeImage.value = ''; // Reset file input
+                
+                if (t?.image) {
+                    trusteeImagePreview.src = t.image;
+                    imagePreviewContainer.style.display = 'block';
+                } else {
+                    imagePreviewContainer.style.display = 'none';
+                }
+                
+                trusteeModalAlert.style.display = 'none';
+                trusteeModal.classList.add('active');
+            }
+
+            addTrusteeBtn.addEventListener('click', () => openTrusteeModal(null));
+            [trusteeModalClose, cancelTrusteeBtn].forEach(b => b.addEventListener('click', () => trusteeModal.classList.remove('active')));
+
+            trusteeForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = trusteeId.value;
+                const formData = new FormData();
+                formData.append('name', trusteeName.value.trim());
+                formData.append('position', trusteePosition.value.trim());
+                formData.append('bio', trusteeBio.value.trim());
+                formData.append('order', trusteeOrder.value);
+                
+                if (trusteeImage.files[0]) {
+                    formData.append('image', trusteeImage.files[0]);
+                } else if (!id) {
+                    showTrusteeModalError('Image is required for new trustee');
+                    return;
+                }
+
+                saveTrusteeBtn.disabled = true;
+                saveTrusteeBtn.querySelector('.btn-text').style.display = 'none';
+                saveTrusteeBtn.querySelector('.fa-spinner').style.display = 'inline-block';
+
+                try {
+                    const url = id ? `${API_BASE_URL}/trustee/${id}` : `${API_BASE_URL}/trustee`;
+                    const method = id ? 'PUT' : 'POST';
+                    const resp = await fetch(url, {
+                        method: method,
+                        headers: { Authorization: `Bearer ${authToken}` },
+                        body: formData
+                    });
+                    if (resp.ok) {
+                        trusteeModal.classList.remove('active');
+                        fetchTrustees();
+                    } else {
+                        const er = await resp.json();
+                        const errorMsg = er.message || er.error || (typeof er === 'string' ? er : 'Server Error');
+                        showTrusteeModalError(errorMsg);
+                    }
+                } catch { showTrusteeModalError('Network error'); } 
+                finally {
+                    saveTrusteeBtn.disabled = false;
+                    saveTrusteeBtn.querySelector('.btn-text').style.display = 'inline';
+                    saveTrusteeBtn.querySelector('.fa-spinner').style.display = 'none';
+                }
+            });
+
+            function showTrusteeModalError(m) {
+                trusteeModalAlert.textContent = m;
+                trusteeModalAlert.style.display = 'flex';
+                setTimeout(() => trusteeModalAlert.style.display = 'none', 4000);
+            }
+
+            function showTrusteesLoading(show) {
+                trusteesLoadingIndicator.style.display = show ? 'block' : 'none';
+                if (show) { trusteeCardList.style.display = 'none'; trusteesEmptyState.style.display = 'none'; }
+            }
+
+            function showTrusteesError(m) {
+                trusteesEmptyState.innerHTML = `<i class="fas fa-exclamation-circle" style="color:var(--danger-color);"></i><h3>Error</h3><p>${m}</p>`;
+                trusteesEmptyState.style.display = 'block';
+                trusteeCardList.style.display = 'none';
+            }
+
+            function openViewModal(n) {
+                viewNewsTitle.textContent = n.title||'';
+                const d = new Date(n.date||n.createdAt||new Date()); viewNewsDateText.textContent = d.toLocaleDateString('en-US',{ year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
+                viewNewsDescription.textContent = n.description||'';
+                viewNewsModal.classList.add('active');
+            }
+
+            function openNewsModal(n) {
+                modalTitle.innerHTML = n ? '<i class="fas fa-edit"></i><span>Edit</span>' : '<i class="fas fa-plus-circle"></i><span>New article</span>';
+                newsId.value = n?._id||'';
+                newsTitle.value = n?.title||'';
+                newsDescription.value = n?.description||'';
+                if (n?.date) { const d = new Date(n.date); newsDate.value = d.toISOString().slice(0,16); }
+                else { newsDate.value = new Date().toISOString().slice(0,16); }
+                modalAlert.style.display='none'; newsModal.classList.add('active');
+            }
+
+            [modalClose, cancelBtn].forEach(b=>b.addEventListener('click',()=>newsModal.classList.remove('active')));
+            [deleteModalClose, cancelDeleteBtn].forEach(b=>b.addEventListener('click',()=>{ deleteModal.classList.remove('active'); deleteTargetId=null; }));
+            [viewModalClose, closeViewBtn].forEach(b=>b.addEventListener('click',()=>viewNewsModal.classList.remove('active')));
+            window.addEventListener('click', e => { if(e.target===newsModal) newsModal.classList.remove('active'); if(e.target===deleteModal) { deleteModal.classList.remove('active'); deleteTargetId=null; } if(e.target===viewNewsModal) viewNewsModal.classList.remove('active'); });
+
+            confirmDeleteBtn.addEventListener('click', async ()=>{
+                if(!deleteTargetId) return;
+                confirmDeleteBtn.disabled=true; confirmDeleteBtn.querySelector('.btn-text').style.display='none'; confirmDeleteBtn.querySelector('.fa-spinner').style.display='inline-block';
+                try{ 
+                    let endpoint = 'news';
+                    if (deleteType === 'trustee') endpoint = 'trustee';
+                    else if (deleteType === 'hero') endpoint = 'hero';
+                    else if (deleteType === 'event') endpoint = 'event';
+
+                    const resp = await fetch(`${API_BASE_URL}/${endpoint}/${deleteTargetId}`,{ method:'DELETE', headers:{Authorization:`Bearer ${authToken}`} }); 
+                    if (resp.ok) {
+                        deleteModal.classList.remove('active'); 
+                        if (deleteType === 'news') fetchNews(); 
+                        else if (deleteType === 'trustee') fetchTrustees();
+                        else if (deleteType === 'hero') fetchHeroes();
+                        else if (deleteType === 'event') fetchEvents();
+                    } else {
+                        alert('Error deleting item');
+                    }
+                }catch(e){ alert('Error'); } finally { confirmDeleteBtn.disabled=false; confirmDeleteBtn.querySelector('.btn-text').style.display='inline'; confirmDeleteBtn.querySelector('.fa-spinner').style.display='none'; deleteTargetId=null; }
+            });
+
+            newsForm.addEventListener('submit', async (e)=>{
+                e.preventDefault();
+                const id = newsId.value, title = newsTitle.value.trim(), desc = newsDescription.value.trim(), date = newsDate.value;
+                const imageFile = document.getElementById('newsImage').files[0];
+                if(!title||!desc||!date) { showModalError('All fields required'); return; }
+
+                saveBtn.disabled=true; saveBtn.querySelector('.btn-text').style.display='none'; saveBtn.querySelector('.fa-spinner').style.display='inline-block';
+                
+                const dateObj = new Date(date);
+                if(isNaN(dateObj.getTime())) { showModalError('Invalid date format'); return; }
+
+                const formData = new FormData();
+                formData.append('title', title);
+                formData.append('description', desc);
+                formData.append('date', dateObj.toISOString());
+                if(imageFile) formData.append('image', imageFile);
+
+                try {
+                    const url = id ? `${API_BASE_URL}/news/${id}` : `${API_BASE_URL}/news`;
+                    const resp = await fetch(url, { method: id?'PUT':'POST', headers:{ Authorization:`Bearer ${authToken}`}, body: formData });
+                    if (resp.ok) { newsModal.classList.remove('active'); fetchNews(); newsForm.reset(); } else { const er = await resp.json(); showModalError(er.message||'Error'); }
+                } catch { showModalError('Network error'); } finally { saveBtn.disabled=false; saveBtn.querySelector('.btn-text').style.display='inline'; saveBtn.querySelector('.fa-spinner').style.display='none'; }
+            });
+
+            function showModalError(m) { modalAlert.textContent=m; modalAlert.style.display='flex'; setTimeout(()=>modalAlert.style.display='none',4000); }
+
+            searchInput.addEventListener('input', debounce((e)=>{ currentFilters.search=e.target.value; currentPage=1; applyFiltersAndRender(); },300));
+            sortFilter.addEventListener('change', (e)=>{ currentFilters.sort=e.target.value; currentPage=1; applyFiltersAndRender(); });
+
+            function renderPagination(total) {
+                const pages = Math.ceil(total/itemsPerPage);
+                if(pages<=1) { paginationDiv.innerHTML=''; return; }
+                let html = `<button class="page-btn" onclick="changePage(${currentPage-1})" ${currentPage===1?'disabled':''}><i class="fas fa-chevron-left"></i></button>`;
+                for(let i=1;i<=pages;i++) { if(i===1||i===pages||(i>=currentPage-2&&i<=currentPage+2)) html+=`<button class="page-btn ${i===currentPage?'active':''}" onclick="changePage(${i})">${i}</button>`; else if(i===currentPage-3||i===currentPage+3) html+=`<span class="page-dots">...</span>`; }
+                html+=`<button class="page-btn" onclick="changePage(${currentPage+1})" ${currentPage===pages?'disabled':''}><i class="fas fa-chevron-right"></i></button>`;
+                paginationDiv.innerHTML = html;
+            }
+            window.changePage = (p) => { currentPage = p; applyFiltersAndRender(); };
+
+            addNewsBtn.addEventListener('click',()=>openNewsModal(null));
+
+            // Hero Slider Logic
+            async function fetchHeroes() {
+                try {
+                    const resp = await fetch(`${API_BASE_URL}/hero`, { headers: { Authorization: `Bearer ${authToken}` } });
+                    if (resp.ok) {
+                        heroData = await resp.json();
+                        renderHeroCards();
+                    }
+                } catch (e) { }
+            }
+
+            function renderHeroCards() {
+                heroCardList.innerHTML = heroData.map(h => `
+                    <div class="news-card">
+                        <div class="news-card-header" style="align-items: center; gap: 15px;">
+                            <img src="${h.image}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px;">
+                            <div style="flex: 1;">
+                                <div class="news-card-title">${escapeHtml(h.title)}</div>
+                                <div style="font-size: 0.8rem; color: var(--gray-color);">${escapeHtml(h.subtitle || '')}</div>
+                            </div>
+                            <span class="news-card-date">Order: ${h.order || 0}</span>
+                        </div>
+                        <div class="news-card-actions">
+                            <button class="card-action-btn edit-btn-card" onclick="editHero('${h._id}')"><i class="fas fa-edit"></i> Edit</button>
+                            <button class="card-action-btn delete-btn-card" onclick="openDeleteModal('${h._id}', 'hero')"><i class="fas fa-trash"></i> Del</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            window.editHero = async (id) => {
+                const h = heroData.find(x => x._id === id);
+                if (h) openHeroModal(h);
+            };
+
+            function openHeroModal(h) {
+                heroModalTitle.innerHTML = h ? '<i class="fas fa-edit"></i><span>Edit Slide</span>' : '<i class="fas fa-plus-circle"></i><span>Add Slide</span>';
+                heroId.value = h?._id || '';
+                heroTitle.value = h?.title || '';
+                heroSubtitle.value = h?.subtitle || '';
+                heroOrder.value = h?.order || 0;
+                heroImage.value = '';
+                heroModal.classList.add('active');
+            }
+
+            addHeroBtn.addEventListener('click', () => openHeroModal(null));
+            [heroModalClose, cancelHeroBtn].forEach(b => b.addEventListener('click', () => heroModal.classList.remove('active')));
+
+            heroForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const id = heroId.value;
+                const formData = new FormData();
+                formData.append('title', heroTitle.value.trim());
+                formData.append('subtitle', heroSubtitle.value.trim());
+                formData.append('order', heroOrder.value);
+                if (heroImage.files[0]) formData.append('image', heroImage.files[0]);
+                else if (!id) { alert('Image required'); return; }
+
+                saveHeroBtn.disabled = true;
+                try {
+                    const url = id ? `${API_BASE_URL}/hero/${id}` : `${API_BASE_URL}/hero`;
+                    const method = id ? 'PUT' : 'POST';
+                    const resp = await fetch(url, { method, headers: { Authorization: `Bearer ${authToken}` }, body: formData });
+                    if (resp.ok) { heroModal.classList.remove('active'); fetchHeroes(); }
+                } catch (e) { } finally { saveHeroBtn.disabled = false; }
+            });
+
+            // Events Logic
+            async function fetchEvents() {
+                try {
+                    const resp = await fetch(`${API_BASE_URL}/event`, { headers: { Authorization: `Bearer ${authToken}` } });
+                    if (resp.ok) {
+                        eventData = await resp.json();
+                        renderEventCards();
+                    }
+                } catch (e) { }
+            }
+
+            function renderEventCards() {
+                eventCardList.innerHTML = eventData.map(ev => `
+                    <div class="news-card">
+                        <div class="news-card-header" style="align-items: center; gap: 15px;">
+                            <img src="${ev.image}" style="width: 80px; height: 50px; object-fit: cover; border-radius: 4px;">
+                            <div style="flex: 1;">
+                                <div class="news-card-title">${escapeHtml(ev.title || 'Event Image')}</div>
+                                <div style="font-size: 0.8rem; color: var(--gray-color);">${new Date(ev.createdAt).toLocaleDateString()}</div>
+                            </div>
+                        </div>
+                        <div class="news-card-actions">
+                            <button class="card-action-btn delete-btn-card" onclick="openDeleteModal('${ev._id}', 'event')"><i class="fas fa-trash"></i> Del</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            addEventBtn.addEventListener('click', () => eventModal.classList.add('active'));
+            [eventModalClose, cancelEventBtn].forEach(b => b.addEventListener('click', () => eventModal.classList.remove('active')));
+
+            eventForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const formData = new FormData();
+                formData.append('title', eventTitle.value.trim());
+                if (eventImage.files[0]) formData.append('image', eventImage.files[0]);
+                else { alert('Image required'); return; }
+
+                saveEventBtn.disabled = true;
+                try {
+                    const resp = await fetch(`${API_BASE_URL}/event`, { method: 'POST', headers: { Authorization: `Bearer ${authToken}` }, body: formData });
+                    if (resp.ok) { eventModal.classList.remove('active'); fetchEvents(); eventForm.reset(); }
+                } catch (e) { } finally { saveEventBtn.disabled = false; }
+            });
+
+            function showLoading(show) { loadingIndicator.style.display = show?'block':'none'; if(show) { newsCardList.style.display='none'; emptyState.style.display='none'; } }
+            function showError(m) { emptyState.innerHTML=`<i class="fas fa-exclamation-circle" style="color:var(--danger-color);"></i><h3>Error</h3><p>${m}</p>`; emptyState.style.display='block'; newsCardList.style.display='none'; }
+            function escapeHtml(t) { const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+            function debounce(f,w){ let t; return function(...a){ clearTimeout(t); t=setTimeout(()=>f(...a),w); }; }
+        })();
+    </script>
+</body>
+</html>
